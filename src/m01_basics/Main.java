@@ -55,6 +55,12 @@ public class Main {
         String namesString = doStringStuff(upperConcat, employees.get(0).getName(),
                 employees.get(1).getName());
         System.out.println("2 names String: " + namesString);
+
+        // lambdy mogą być bardziej rozbudowane, wtedy trzeba użyć return:
+        UpperConcat lc = (s1, s2) -> {
+            String result = s1.toLowerCase() + s2.toLowerCase();
+            return result;
+        };
     }
 
     public final static String doStringStuff(UpperConcat uc, String s1, String s2){
