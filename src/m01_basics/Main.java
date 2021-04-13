@@ -39,9 +39,16 @@ public class Main {
                 employee1.getName().compareTo(employee2.getName()));
         // lambda powyżej jest drugim parametrem metody sort()
 
+        // 2 METODY ITERACJI:
+        // enhanced for loop:
         for (Employee employee : employees){
             System.out.println(employee.getName());
         }
+
+        // foreach():
+        employees.forEach(employee -> {
+            System.out.println(employee.getLastName() + ": " + employee.getAge());
+        });
 
 //        String namesString = doStringStuff(new UpperConcat() {
 //            @Override
