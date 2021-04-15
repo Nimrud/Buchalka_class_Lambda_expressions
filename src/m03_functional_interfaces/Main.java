@@ -4,7 +4,10 @@ import m01_basics.Employee;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.function.IntPredicate;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 public class Main {
     public static void main(String[] args) {
@@ -35,8 +38,34 @@ public class Main {
 //            }
 //        });
 
-        printEmployeesByAge(employees, "Employees over age of 30",
+        printEmployeesByAge(employees, "Employees over age of 30:",
                 employee -> employee.getAge() > 30);
+
+        // Predykaty mogą być tworzone nie tylko jako lambdy, ale też klasy anonimowe:
+        printEmployeesByAge(employees, "Employees younger than 30:", new Predicate<Employee>() {
+            @Override
+            public boolean test(Employee employee) {
+                return employee.getAge() < 30;
+            }
+        });
+
+        // są też bardziej specyficzne typy Predykatów (int, long, double):
+        IntPredicate greaterThan15 = i -> i > 15;
+        System.out.println(greaterThan15.test(10));  // sprawdzamy, czy 10 > 15
+
+        // predykaty można łączyć (chaining):
+        IntPredicate lessThan100 = i -> i < 100;
+        System.out.println(greaterThan15.and(lessThan100).test(36));
+        // oprócz "and", interfejs Predicate zawiera też metody "or", negate", "is equal"
+
+        // Kolejnym interfejsem jest Supplier - on zwraca jakąś wartość
+        // Przykład - 5 losowych liczb trzycyfrowych:
+        Random random = new Random();
+        Supplier<Integer> randomSupplier = () -> random.nextInt(1000);
+        for (int i = 0; i < 5; i++){
+            System.out.println(randomSupplier.get());
+        }
+
     }
 
     private static void printEmployeesByAge(List<Employee> employees,
