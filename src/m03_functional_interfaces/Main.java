@@ -5,10 +5,7 @@ import m01_basics.Employee;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.function.Function;
-import java.util.function.IntPredicate;
-import java.util.function.Predicate;
-import java.util.function.Supplier;
+import java.util.function.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -41,6 +38,7 @@ public class Main {
 
         printEmployeesByAge(employees, "Employees over age of 30:",
                 employee -> employee.getAge() > 30);
+        // Predykaty zwracają wartość prawda/fałsz
 
         // Predykaty mogą być tworzone nie tylko jako lambdy, ale też klasy anonimowe:
         printEmployeesByAge(employees, "Employees younger than 30:", new Predicate<Employee>() {
@@ -67,14 +65,13 @@ public class Main {
             System.out.println(randomSupplier.get());
         }
 
-        // Interfejs Function:
+        // Interfejs Function - przyjmuje argument, zwraca wartość:
         Function<Employee, String> getLastName = (Employee employee) -> {
             return employee.getLastName();
         };
 
         String lastName = getLastName.apply(employees.get(2));  // zwraca nazwisko trzeciego pracownika
         System.out.println(lastName);
-
     }
 
     private static void printEmployeesByAge(List<Employee> employees,
