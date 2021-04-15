@@ -5,6 +5,7 @@ import m01_basics.Employee;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.Function;
 import java.util.function.IntPredicate;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -65,6 +66,14 @@ public class Main {
         for (int i = 0; i < 5; i++){
             System.out.println(randomSupplier.get());
         }
+
+        // Interfejs Function:
+        Function<Employee, String> getLastName = (Employee employee) -> {
+            return employee.getLastName();
+        };
+
+        String lastName = getLastName.apply(employees.get(2));  // zwraca nazwisko trzeciego pracownika
+        System.out.println(lastName);
 
     }
 
