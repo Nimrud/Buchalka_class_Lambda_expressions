@@ -3,6 +3,7 @@ package m04_streams;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 
 public class Main {
     public static void main(String[] args) {
@@ -29,9 +30,16 @@ public class Main {
                 .map(String::toUpperCase)   // method reference
                 .filter(s -> s.startsWith("G"))
                 .sorted()
-                .forEach(System.out::println);
+                .forEach(System.out::println);   // forEach() musi być ostatnią metodą, bo ona nic nie zwraca
+                                                 // nazywa się to 'terminal operation'
         // Stream: zestaw odwołań do obiektu
         // obiekt wejściowy nie zostaje w żaden sposób zmieniony przez stream!
+        // stream musi być utworzony z obiektów tego samego typu (np. String lub int)
+
+        Stream<String> ioNumberStream = Stream.of("I26", "I17", "I29", "O71");
+        Stream<String> inNumberStream = Stream.of("N40", "N36", "I26", "I17", "I29", "O71");
+        Stream<String> concatStream = Stream.concat(ioNumberStream, inNumberStream);
+        System.out.println(concatStream.count());
 
     }
 }
