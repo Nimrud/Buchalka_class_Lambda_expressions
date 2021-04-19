@@ -3,6 +3,7 @@ package m04_streams;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Main {
@@ -39,7 +40,54 @@ public class Main {
         Stream<String> ioNumberStream = Stream.of("I26", "I17", "I29", "O71");
         Stream<String> inNumberStream = Stream.of("N40", "N36", "I26", "I17", "I29", "O71");
         Stream<String> concatStream = Stream.concat(ioNumberStream, inNumberStream);
-        System.out.println(concatStream.count());
+        System.out.println("------");
+        System.out.println(concatStream
+                .distinct()                  // distinct() - pomija duplikaty
+                .peek(System.out::println)   // peek() pozwala wypisać elementy streamu bez jego przerywania (jak w forEach)
+                .count());
 
+        // FLAT MAP
+        System.out.println("*** Flat Map ***");
+        Employee mary = new Employee("Mary Jane", 37);
+        Employee john = new Employee("John Popeye", 52);
+        Employee chris = new Employee("Chris Burak", 27);
+        Employee adam = new Employee("Adam Potok", 31);
+
+        Department depHR = new Department("Departament HR");
+        depHR.addEmployee(mary);
+        depHR.addEmployee(john);
+        depHR.addEmployee(chris);
+
+        Department depAccounting = new Department("Księgowość");
+        depAccounting.addEmployee(adam);
+
+        List<Department> companyDepartments = new ArrayList<>();
+        companyDepartments.add(depHR);
+        companyDepartments.add(depAccounting);
+
+        companyDepartments
+                .stream()
+                .flatMap(department -> department.getEmployees().stream())
+                .forEach(System.out::println);
+        // FlatMap() oczekuje funkcji, która zwraca stream
+        // w przykładzie powyżej: department.getEmployees() zwraca listę,
+        // na której wywołujemy metodę stream()
+        // w ten sposób możemy zwrócić obiekty w zagnieżdżonych listach
+        // FlatMap - możliwość operacji na listach, ale gdzie te listy nie są bezp. źródłem
+
+        // COLLECT:
+        System.out.println("--- Collect method ---");
+        // Metoda collect() - zbiera elementy w stream, przekształca w inny rodzaj wyniku (np. w listę)
+        List<String> sortedGNumbers = bingoNumbers
+                .stream()
+                .map(String::toUpperCase)
+                .filter(s -> s.startsWith("G"))
+                .sorted()
+                .collect(Collectors.toList());
+        // wynikiem powyższego jest stworzenie listy, z którą możemy pracować dalej
+
+        for (String s : sortedGNumbers){
+            System.out.println(s);
+        }
     }
 }
