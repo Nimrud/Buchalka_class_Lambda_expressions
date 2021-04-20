@@ -3,6 +3,7 @@ package m04_streams;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -52,6 +53,7 @@ public class Main {
         Employee john = new Employee("John Popeye", 52);
         Employee chris = new Employee("Chris Burak", 27);
         Employee adam = new Employee("Adam Potok", 31);
+        Employee ada = new Employee("Ada Mróz", 44);
 
         Department depHR = new Department("Departament HR");
         depHR.addEmployee(mary);
@@ -60,6 +62,7 @@ public class Main {
 
         Department depAccounting = new Department("Księgowość");
         depAccounting.addEmployee(adam);
+        depAccounting.addEmployee(ada);
 
         List<Department> companyDepartments = new ArrayList<>();
         companyDepartments.add(depHR);
@@ -89,5 +92,27 @@ public class Main {
         for (String s : sortedGNumbers){
             System.out.println(s);
         }
+
+        // grupowanie względem wartości zmiennej (w ramach danej grupy!):
+        Map<Integer, List<Employee>> groupedByAge = companyDepartments.stream()
+                .flatMap(department -> department.getEmployees().stream())
+                .collect(Collectors.groupingBy(employee -> employee.getAge()));
+
+        for (Map.Entry<Integer, List<Employee>> entry : groupedByAge.entrySet()){
+            System.out.println(entry.getKey() + ": " + entry.getValue().toString());
+        }
+
+        // REDUCE
+        // przykład wyświetlenia najmłodszego pracownika w streamie:
+        companyDepartments.stream()
+                .flatMap(department -> department.getEmployees().stream())
+                .reduce((e1, e2) -> e1.getAge() < e2.getAge() ? e1 : e2)
+                // powyżej: zwraca e1 jeśli równanie jest prawdziwe, e2 jeśli nie jest
+                // reduce to 'terminal operation'
+                .ifPresent(System.out::println);
+                // używamy ifPresent(), bo metoda reduce() ma opcjonalny wynik
+                // jako że reduce() jest 'terminal operation', to formalnie ifPresent() nie jest częścią łańcucha
+                // tu zaledwie dołączamy metodę (non-stream method) do wyniku streamu
+
     }
 }
